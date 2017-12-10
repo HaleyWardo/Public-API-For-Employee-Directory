@@ -1,3 +1,6 @@
+/////////////////
+/// FUNCTIONS ///
+/////////////////
 
 /**
  * Creates an element.
@@ -45,6 +48,9 @@ const formatName = function(name) {
     return result.join(' ');
 };
 
+/////////////////
+//AJAX REQUEST///
+/////////////////
 $.ajax({
     url: 'https://randomuser.me/api/?results=12&nat=us&inc=name,picture,email,location,cell,dob',
     dataType: 'json',
@@ -103,10 +109,14 @@ $.ajax({
 
                 const modalContent2 = createChildElement(modalContainer, 'div');
                 const modalContent2Ul = createChildElement(modalContent2, 'ul');
+                modalContent2Ul.style = 'padding: 0 2em';
                 createChildElement(modalContent2Ul, 'li', null, employeePhone);
                 createChildElement(modalContent2Ul, 'li', null, employeeAddress);
                 createChildElement(modalContent2Ul, 'li', null, 'Birthday: ' + new Date(employeeBirthday).toLocaleDateString('en-US'));
 
+                createChildElement(modalContainer, 'span', 'chevron left');
+                createChildElement(modalContainer, 'span', 'chevron right');
+                
 
                 //Event listener for closing modal
                 const modalClose = document.querySelector('.modal__close');
@@ -115,6 +125,22 @@ $.ajax({
                     modalContainer.remove();
                 });
             });  
+
+            //Employee search with auto complete feature
+            const datalist = document.querySelector('#searchableEmployees');
+            const employeeSearch = document.querySelector('.employee__search');
+            createChildElement(datalist, 'option', null, employeeFullName); 
+
+            employeeSearch.addEventListener('keyup', () => {
+                if (employeeFullName.toUpperCase().startsWith(employeeSearch.value.toUpperCase())) {
+                    memberContainer.style = 'display: ""';
+                }
+                else {
+                    memberContainer.style = 'display: none';
+                }
+            });
+
+
         }
     }
 });

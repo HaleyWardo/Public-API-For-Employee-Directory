@@ -3,11 +3,28 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-h1 {
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center
+}
+
+header h1 {
     font-size: 19px;
-    padding: 25px 0 0 25px;
+    margin-left: 25px;
     color: rgba(101, 101, 101, 1);
 }
+
+header input {
+    margin-right: 25px; 
+    width: 25%;
+    padding: 10px;
+    border-style: none;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+
 .grid__container {
     display: flex;
     flex-direction: column;
@@ -70,12 +87,15 @@ li {
     background-color: white;
     border-radius: 5px;
     width: 75%;
-    margin:  0 auto;
-    margin-top: 25%;
     color: rgba(146, 145, 145, 1);
     text-align: center;
     font-size: 14px;
     padding: 20px 25px;
+    max-height: calc(100% - 100px);
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .modal__container ul {
@@ -90,7 +110,7 @@ li {
 .modal__name {
     font-size: 16px;
     font-weight: bold;
-    color: rgba(82, 82, 82, 1);
+    color: rgba(82, 82, 82, 1)
 }
 
 .modal__list {
@@ -108,6 +128,7 @@ li {
     font-weight: bold;
     cursor: pointer;
 }
+
 
 /* MEDIA QUERIES */
 @media (min-width: 768px) {
