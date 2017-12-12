@@ -1,12 +1,15 @@
+let employees = [];
+let selectedIndex = 0;
+
 /////////////////
 /// FUNCTIONS ///
 /////////////////
 
 /**
  * Creates an element.
- * @param {object} parentElement 
- * @param {string} tagName 
- * @param {string} className 
+ * @param {object} parentElement
+ * @param {string} tagName
+ * @param {string} className
  * @param {string} innerHTML
  * @returns the created element
  */
@@ -24,7 +27,7 @@ const createChildElement = (parentElement, tagName, className, innerHTML) => {
 
 /**
  * Capitalizes the first letter in a string.  Handles spaced strings.
- * @param {string} name 
+ * @param {string} name
  * @returns a capitalized string
  */
 const formatName = function(name) {
@@ -37,6 +40,78 @@ const formatName = function(name) {
     return result.join(' ');
 };
 
+const displayModalForUser = function(member) {
+    const index = employees.indexOf(member);
+
+    const employeeEmail = member.email;
+    const employeeCity = formatName(member.location.city);
+    const employeeFirstName = formatName(member.name.first);
+    const employeeLastName = formatName(member.name.last);
+    const employeeFullName = `${employeeFirstName} ${employeeLastName}`;
+    const employeeImage = member.picture.medium;
+    const employeeImageLarge = member.picture.large;
+
+    const employeePhone = member.cell;
+    const employeeBirthday = member.dob;
+
+    const employeeStreet = formatName(member.location.street);
+    const employeeState = formatName(member.location.state);
+    const employeeZip = member.location.postcode;
+    const employeeAddress = `${employeeStreet} ${employeeCity}, ${employeeState} ${employeeZip}`;
+
+    const modalOverlay = document.querySelector('.modal__overlay');
+    modalOverlay.style = 'display: inline-block';
+
+    let modalContent =
+    `<div class="modal__container">
+        <div>
+            <span class="modal--close">&times;</span>
+            <ul class="modal__list">
+                <img src="${employeeImageLarge}" id="modal--image">
+                <li id="modal__name">${employeeFullName}</li>
+                <li>${employeeEmail}</li>
+                <li>${employeeCity}</li>
+            </ul>
+        </div>
+        <div>
+            <ul class="modal__list2">
+                <li>${employeePhone}</li>
+                <li>${employeeAddress}</li>
+                <li>Birthday: ${new Date(employeeBirthday).toLocaleDateString('en-US')}</li>
+            </ul>
+            <img class="arrowLeft" src="images/arrow-left.png">
+            <img class="arrowRight" src="images/arrow-right.png">
+        </div>
+    </div>`;
+    modalOverlay.innerHTML = modalContent;
+
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target.className === 'arrowLeft') {
+            if (index === 0) {
+                return displayModalForUser(employees[employees.length - 1]);
+            }
+            // if index === 0, displayModalForUser with user at the end of the array
+            const previousIndex = index - 1;
+            return displayModalForUser(employees[index - 1]);
+        }
+        if (e.target.className === 'arrowRight') {
+            // if index is at the end of the array, displayModalForUser with index at 0
+
+            if (index === employees.length - 1) {
+                return displayModalForUser(employees[0]);
+            }
+            return displayModalForUser(employees[index + 1]);
+        }
+    });
+
+    //Event listener for closing modal
+    const modalClose = document.querySelector('.modal--close');
+    modalClose.addEventListener('click', () => {
+        modalOverlay.style = 'display: none';
+        $('.modal__container').remove();
+    });
+};
+
 /////////////////
 //AJAX REQUEST///
 /////////////////
@@ -44,7 +119,7 @@ $.ajax({
     url: 'https://randomuser.me/api/?results=12&nat=us&inc=name,picture,email,location,cell,dob',
     dataType: 'json',
     success: function(response) {
-        const employees = response.results;
+        employees = response.results;
 
         //MAIN EMPLOYEE DIRECTORY
         for (let i = 0; i < employees.length; i++) {
@@ -63,12 +138,13 @@ $.ajax({
             const employeeState = formatName(employees[i].location.state);
             const employeeZip = employees[i].location.postcode;
             const employeeAddress = `${employeeStreet} ${employeeCity}, ${employeeState} ${employeeZip}`;
-            
+
             const mainContainer = document.querySelector('.main-container');
-            const memberContainer = createChildElement(mainContainer, 'div', 'grid__item');  
+            const memberContainer = createChildElement(mainContainer, 'div', 'grid__item');
+            memberContainer.onclick = () => displayModalForUser(employees[i]);
 
             //Container for each member
-            let memberContent = 
+            let memberContent =
                 `<div class="member__img">
                     <img src="${employeeImage}">
                 </div>
@@ -80,56 +156,11 @@ $.ajax({
                     </ul>
                 </div>`;
             memberContainer.innerHTML = memberContent;
-           
-            // MODAL POP-UP            
-            memberContainer.addEventListener('click', (e) => {
-                const modalOverlay = document.querySelector('.modal__overlay');
-                modalOverlay.style = 'display: inline-block';
-
-                let modalContent = 
-                `<div class="modal__container">
-                    <div>
-                        <span class="modal--close">&times;</span>
-                        <ul class="modal__list">
-                            <img src="${employeeImageLarge}" id="modal--image">
-                            <li id="modal__name">${employeeFullName}</li>
-                            <li>${employeeEmail}</li>
-                            <li>${employeeCity}</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul class="modal__list2">
-                            <li>${employeePhone}</li>
-                            <li>${employeeAddress}</li>
-                            <li>Birthday: ${new Date(employeeBirthday).toLocaleDateString('en-US')}</li>
-                        </ul>
-                        <img class="arrowLeft" src="images/arrow-left.png">
-                        <img class="arrowRight" src="images/arrow-right.png">
-                    </div>
-                </div>`;
-                modalOverlay.innerHTML = modalContent;
-
-                modalOverlay.addEventListener('click', (e) => {
-                    if (e.target.className === "arrowLeft"){
-                        console.log('left')
-                    }
-                    if (e.target.className === "arrowRight"){
-                        console.log('right')
-                    }
-                });
-
-                //Event listener for closing modal
-                const modalClose = document.querySelector('.modal--close');
-                modalClose.addEventListener('click', () => {
-                    modalOverlay.style = 'display: none';
-                    $('.modal__container').remove();
-                });
-            });  
 
             //Employee search with auto complete feature
             const datalist = document.querySelector('#searchableEmployees');
             const employeeSearch = document.querySelector('.employee__search');
-            createChildElement(datalist, 'option', null, employeeFullName); 
+            createChildElement(datalist, 'option', null, employeeFullName);
 
             employeeSearch.addEventListener('keyup', () => {
                 if (employeeFullName.toUpperCase().startsWith(employeeSearch.value.toUpperCase())) {
