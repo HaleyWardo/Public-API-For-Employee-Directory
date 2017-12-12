@@ -44,21 +44,8 @@ const formatName = function(name) {
 const displayModalForUser = function(member) {
     selectedIndex = employees.indexOf(member);
 
-    const employeeEmail = member.email;
-    const employeeCity = formatName(member.location.city);
-    const employeeFirstName = formatName(member.name.first);
-    const employeeLastName = formatName(member.name.last);
-    const employeeFullName = `${employeeFirstName} ${employeeLastName}`;
-    const employeeImage = member.picture.medium;
-    const employeeImageLarge = member.picture.large;
-
-    const employeePhone = member.cell;
-    const employeeBirthday = member.dob;
-
-    const employeeStreet = formatName(member.location.street);
-    const employeeState = formatName(member.location.state);
-    const employeeZip = member.location.postcode;
-    const employeeAddress = `${employeeStreet} ${employeeCity}, ${employeeState} ${employeeZip}`;
+    const employeeFullName = `${formatName(member.name.first)} ${formatName(member.name.last)}`;
+    const employeeAddress = `${formatName(member.location.street)} ${formatName(member.location.city)}, ${formatName(member.location.state)} ${member.location.postcode}`;
 
     modalOverlay.style = 'display: inline-block';
 
@@ -67,17 +54,17 @@ const displayModalForUser = function(member) {
         <div>
             <span class="modal--close">&times;</span>
             <ul class="modal__list">
-                <img src="${employeeImageLarge}" id="modal--image">
+                <img src="${member.picture.large}" id="modal--image">
                 <li id="modal__name">${employeeFullName}</li>
-                <li>${employeeEmail}</li>
-                <li>${employeeCity}</li>
+                <li>${member.email}</li>
+                <li>${formatName(member.location.city)}</li>
             </ul>
         </div>
         <div>
             <ul class="modal__list2">
-                <li>${employeePhone}</li>
+                <li>${member.cell}</li>
                 <li>${employeeAddress}</li>
-                <li>Birthday: ${new Date(employeeBirthday).toLocaleDateString('en-US')}</li>
+                <li>Birthday: ${new Date(member.dob).toLocaleDateString('en-US')}</li>
             </ul>
             <img class="arrowLeft" src="images/arrow-left.png">
             <img class="arrowRight" src="images/arrow-right.png">
@@ -96,6 +83,7 @@ const displayModalForUser = function(member) {
 
 // Event listener for arrow clicks
 modalOverlay.addEventListener('click', (e) => {
+
     if (e.target.className === 'arrowLeft') {
         if (selectedIndex === 0) {
             return displayModalForUser(employees[employees.length - 1]);
@@ -123,21 +111,9 @@ $.ajax({
 
         //MAIN EMPLOYEE DIRECTORY
         for (let i = 0; i < employees.length; i++) {
-            const employeeEmail = employees[i].email;
-            const employeeCity = formatName(employees[i].location.city);
             const employeeFirstName = formatName(employees[i].name.first);
             const employeeLastName = formatName(employees[i].name.last);
             const employeeFullName = `${employeeFirstName} ${employeeLastName}`;
-            const employeeImage = employees[i].picture.medium;
-            const employeeImageLarge = employees[i].picture.large;
-
-            const employeePhone = employees[i].cell;
-            const employeeBirthday = employees[i].dob;
-
-            const employeeStreet = formatName(employees[i].location.street);
-            const employeeState = formatName(employees[i].location.state);
-            const employeeZip = employees[i].location.postcode;
-            const employeeAddress = `${employeeStreet} ${employeeCity}, ${employeeState} ${employeeZip}`;
 
             const mainContainer = document.querySelector('.main-container');
             const memberContainer = createChildElement(mainContainer, 'div', 'grid__item');
@@ -146,13 +122,13 @@ $.ajax({
             //Container for each member
             let memberContent =
                 `<div class="member__img">
-                    <img src="${employeeImage}">
+                    <img src="${employees[i].picture.medium}">
                 </div>
                 <div class="member__info">
                     <ul class="member__item">
                         <li id="name">${employeeFullName}</li>
-                        <li id="email">${employeeEmail}</li>
-                        <li id="city">${employeeCity}</li>
+                        <li id="email">${employees[i].email}</li>
+                        <li id="city">${formatName(employees[i].location.city)}</li>
                     </ul>
                 </div>`;
             memberContainer.innerHTML = memberContent;

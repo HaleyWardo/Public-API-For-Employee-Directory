@@ -5,20 +5,18 @@ body {
 
 header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center
 }
 
 header h1 {
     font-size: 19px;
-    margin-left: 25px;
     color: rgba(101, 101, 101, 1);
 }
 
 header input {
-    margin-right: 25px;
-    width: 25%;
+    margin-bottom: 20px;
+    width: 325px;
     padding: 10px;
     border-style: none;
     border: 1px solid lightgrey;
@@ -90,18 +88,20 @@ li {
     width: 75%;
     color: rgba(146, 145, 145, 1);
     text-align: center;
+    min-height: 30em;
     font-size: 14px;
     padding: 20px 25px;
     max-height: calc(100% - 100px);
     position: fixed;
     top: 30%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -20%);
 }
 
 .modal__container ul {
     line-height: 1.8;
     padding-left: 0;
+    font-weight: 300;
 }
 
 #modal--image {
@@ -117,16 +117,13 @@ li {
 .modal__list {
     padding-bottom: 10px;
     border-bottom: solid 1px lightgrey;
-    font-weight: 300;
+    height: 225px;
 }
+
 
 .modal__list2 {
-    font-weight: 300;
+    height: 85px;
 }
-
-/* .modal__list2 {
-    padding: 0 2em 0 2em;
-} */
 
 .modal--close {
     float: right;
@@ -146,8 +143,29 @@ li {
     cursor: pointer;
 }
 
+.arrowLeft:active .modal__container {
+    background-color: blue;
+    transition: 1s;
+}
+
 /* MEDIA QUERIES */
 @media (min-width: 768px) {
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    header h1 {
+        margin-left: 25px;
+    }
+
+    .employee__search {
+        margin: 25px 50px 25px 0;
+        width: 350px;
+    }
+
     .grid__container {
         display: flex;
         flex-direction: row;
