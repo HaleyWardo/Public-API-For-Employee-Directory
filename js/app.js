@@ -1,5 +1,6 @@
 let employees = [];
 let selectedIndex = 0;
+const modalOverlay = document.querySelector('.modal__overlay');
 
 /////////////////
 /// FUNCTIONS ///
@@ -41,7 +42,7 @@ const formatName = function(name) {
 };
 
 const displayModalForUser = function(member) {
-    const index = employees.indexOf(member);
+    selectedIndex = employees.indexOf(member);
 
     const employeeEmail = member.email;
     const employeeCity = formatName(member.location.city);
@@ -59,7 +60,6 @@ const displayModalForUser = function(member) {
     const employeeZip = member.location.postcode;
     const employeeAddress = `${employeeStreet} ${employeeCity}, ${employeeState} ${employeeZip}`;
 
-    const modalOverlay = document.querySelector('.modal__overlay');
     modalOverlay.style = 'display: inline-block';
 
     let modalContent =
@@ -83,26 +83,8 @@ const displayModalForUser = function(member) {
             <img class="arrowRight" src="images/arrow-right.png">
         </div>
     </div>`;
+
     modalOverlay.innerHTML = modalContent;
-
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target.className === 'arrowLeft') {
-            if (index === 0) {
-                return displayModalForUser(employees[employees.length - 1]);
-            }
-            // if index === 0, displayModalForUser with user at the end of the array
-            const previousIndex = index - 1;
-            return displayModalForUser(employees[index - 1]);
-        }
-        if (e.target.className === 'arrowRight') {
-            // if index is at the end of the array, displayModalForUser with index at 0
-
-            if (index === employees.length - 1) {
-                return displayModalForUser(employees[0]);
-            }
-            return displayModalForUser(employees[index + 1]);
-        }
-    });
 
     //Event listener for closing modal
     const modalClose = document.querySelector('.modal--close');
@@ -111,6 +93,24 @@ const displayModalForUser = function(member) {
         $('.modal__container').remove();
     });
 };
+
+// Event listener for arrow clicks
+modalOverlay.addEventListener('click', (e) => {
+    if (e.target.className === 'arrowLeft') {
+        if (selectedIndex === 0) {
+            return displayModalForUser(employees[employees.length - 1]);
+        }
+
+        return displayModalForUser(employees[selectedIndex - 1]);
+    }
+    if (e.target.className === 'arrowRight') {
+        if (selectedIndex === employees.length - 1) {
+            return displayModalForUser(employees[0]);
+        }
+
+        return displayModalForUser(employees[selectedIndex + 1]);
+    }
+});
 
 /////////////////
 //AJAX REQUEST///
