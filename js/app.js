@@ -13,15 +13,12 @@
 const createChildElement = (parentElement, tagName, className, innerHTML) => {
     const createdElement = document.createElement(tagName);
     parentElement.appendChild(createdElement);
-   
     if (className) {
         createdElement.className = className;
     }
-
     if (innerHTML) {
         createdElement.innerHTML = innerHTML;
     }
-
     return createdElement;
 };
 
@@ -31,20 +28,12 @@ const createChildElement = (parentElement, tagName, className, innerHTML) => {
  * @returns a capitalized string
  */
 const formatName = function(name) {
-    // Split by spaces '1234 fake street' => [ '1234', 'fake', 'street' ];
     const splitName = name.split(' ');
-
-    // Create a new array to store our capitalized strings
     let result = [];
     for (let i = 0; i < splitName.length; i++) {
-        // Get the i-indexed word from the string
         const word = splitName[i];
-
-        // Capitalize the first letter + the remaining text and push it to our result array
         result.push(word[0].toUpperCase() + word.slice(1));
     }
-
-    // Join the result strings back together with spaces as the separator
     return result.join(' ');
 };
 
@@ -65,6 +54,7 @@ $.ajax({
             const employeeLastName = formatName(employees[i].name.last);
             const employeeFullName = `${employeeFirstName} ${employeeLastName}`;
             const employeeImage = employees[i].picture.medium;
+            const employeeImageLarge = employees[i].picture.large;
 
             const employeePhone = employees[i].cell;
             const employeeBirthday = employees[i].dob;
@@ -75,54 +65,64 @@ $.ajax({
             const employeeAddress = `${employeeStreet} ${employeeCity}, ${employeeState} ${employeeZip}`;
             
             const mainContainer = document.querySelector('.main-container');
-            
-            //Member container for each member
             const memberContainer = createChildElement(mainContainer, 'div', 'grid__item');  
 
-            const memberImgContainer = createChildElement(memberContainer, 'div');   //container for picture
-            const memberImg = createChildElement(memberImgContainer, 'img');
-            memberImg.src = employeeImage;
-            
-            const memberInfoContainer = createChildElement(memberContainer, 'div');   //container for member info
-            const memberInfoUl = createChildElement(memberInfoContainer, 'ul');  //list for member info
-            createChildElement(memberInfoUl, 'li', 'name', employeeFullName);
-            createChildElement(memberInfoUl, 'li', 'email', employeeEmail);
-            createChildElement(memberInfoUl, 'li', 'city', employeeCity);
-            
-            //MODAL POP-UP
+            //Container for each member
+            let memberContent = 
+                `<div class="member__img">
+                    <img src="${employeeImage}">
+                </div>
+                <div class="member__info">
+                    <ul class="member__item">
+                        <li id="name">${employeeFullName}</li>
+                        <li id="email">${employeeEmail}</li>
+                        <li id="city">${employeeCity}</li>
+                    </ul>
+                </div>`;
+            memberContainer.innerHTML = memberContent;
+           
+            // MODAL POP-UP            
             memberContainer.addEventListener('click', (e) => {
                 const modalOverlay = document.querySelector('.modal__overlay');
                 modalOverlay.style = 'display: inline-block';
 
-                const modalContainer = createChildElement(modalOverlay, 'div', 'modal__container');
-                const modalContent1 = createChildElement(modalContainer, 'div');
+                let modalContent = 
+                `<div class="modal__container">
+                    <div>
+                        <span class="modal--close">&times;</span>
+                        <ul class="modal__list">
+                            <img src="${employeeImageLarge}" id="modal--image">
+                            <li id="modal__name">${employeeFullName}</li>
+                            <li>${employeeEmail}</li>
+                            <li>${employeeCity}</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="modal__list2">
+                            <li>${employeePhone}</li>
+                            <li>${employeeAddress}</li>
+                            <li>Birthday: ${new Date(employeeBirthday).toLocaleDateString('en-US')}</li>
+                        </ul>
+                        <img class="arrowLeft" src="images/arrow-left.png">
+                        <img class="arrowRight" src="images/arrow-right.png">
+                    </div>
+                </div>`;
+                modalOverlay.innerHTML = modalContent;
 
-                createChildElement(modalContent1, 'span', 'modal__close', '&times;');
-
-                const modalContent1Ul = createChildElement(modalContent1, 'ul', 'modal__list');
-                const modalImg = createChildElement(modalContent1Ul, 'img', 'modal--image', employeeImage);
-                modalImg.src = employees[i].picture.large;
-
-                createChildElement(modalContent1Ul, 'li', 'modal__name', employeeFullName);
-                createChildElement(modalContent1Ul, 'li', null, employeeEmail);
-                createChildElement(modalContent1Ul, 'li', null, employeeCity);
-
-                const modalContent2 = createChildElement(modalContainer, 'div');
-                const modalContent2Ul = createChildElement(modalContent2, 'ul');
-                modalContent2Ul.style = 'padding: 0 2em';
-                createChildElement(modalContent2Ul, 'li', null, employeePhone);
-                createChildElement(modalContent2Ul, 'li', null, employeeAddress);
-                createChildElement(modalContent2Ul, 'li', null, 'Birthday: ' + new Date(employeeBirthday).toLocaleDateString('en-US'));
-
-                createChildElement(modalContainer, 'span', 'chevron left');
-                createChildElement(modalContainer, 'span', 'chevron right');
-                
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target.className === "arrowLeft"){
+                        console.log('left')
+                    }
+                    if (e.target.className === "arrowRight"){
+                        console.log('right')
+                    }
+                });
 
                 //Event listener for closing modal
-                const modalClose = document.querySelector('.modal__close');
+                const modalClose = document.querySelector('.modal--close');
                 modalClose.addEventListener('click', () => {
                     modalOverlay.style = 'display: none';
-                    modalContainer.remove();
+                    $('.modal__container').remove();
                 });
             });  
 
@@ -139,8 +139,6 @@ $.ajax({
                     memberContainer.style = 'display: none';
                 }
             });
-
-
         }
     }
 });

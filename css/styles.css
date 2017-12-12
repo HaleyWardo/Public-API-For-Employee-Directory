@@ -55,17 +55,18 @@ li {
     list-style-type: none;
 }
 
-.name {
+#name {
     font-weight: bold;
     padding-bottom: 5px;
+    color: rgba(82, 82, 82, 1)
 }
 
-.email {
+#email {
     padding-bottom: 5px;
 }
 
-.email, 
-.city {
+#email, 
+#city {
     font-size: 13px;
     color: rgba(146, 145, 145, 1);
 }
@@ -103,22 +104,31 @@ li {
     padding-left: 0;
 }
 
-.modal--image {
+#modal--image {
     border-radius: 50%;
 }
 
-.modal__name {
+#modal__name {
     font-size: 16px;
     font-weight: bold;
-    color: rgba(82, 82, 82, 1)
+    color: rgba(82, 82, 82, 1);
 }
 
 .modal__list {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: solid 1px lightgrey;
+    font-weight: 300;
 }
 
-.modal__close {
+.modal__list2 {
+    font-weight: 300;
+}
+
+/* .modal__list2 {
+    padding: 0 2em 0 2em;
+} */
+
+.modal--close {
     float: right;
     position: relative;
     top: -20px;
@@ -126,6 +136,13 @@ li {
     color: rgba(82, 82, 82, 1);
     font-size: 1.5em;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.arrowLeft, 
+.arrowRight {
+    width: 35px;
+    margin: 0 10px;
     cursor: pointer;
 }
 
