@@ -1,5 +1,6 @@
 let employees = [];
 let selectedIndex = 0;
+const employeeSearch = document.querySelector('.employee__search');
 const modalOverlay = document.querySelector('.modal__overlay');
 
 /////////////////
@@ -133,11 +134,7 @@ $.ajax({
                 </div>`;
             memberContainer.innerHTML = memberContent;
 
-            //Employee search with auto complete feature
-            const datalist = document.querySelector('#searchableEmployees');
-            const employeeSearch = document.querySelector('.employee__search');
-            createChildElement(datalist, 'option', null, employeeFullName);
-
+            //Event listener for employee search
             employeeSearch.addEventListener('keyup', () => {
                 if (employeeFullName.toUpperCase().startsWith(employeeSearch.value.toUpperCase())) {
                     memberContainer.style = 'display: ""';
