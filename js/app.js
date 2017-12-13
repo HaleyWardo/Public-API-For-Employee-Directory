@@ -136,7 +136,7 @@ $.ajax({
 
             //Event listener for employee search
             employeeSearch.addEventListener('keyup', () => {
-                if (employeeFullName.toUpperCase().startsWith(employeeSearch.value.toUpperCase())) {
+                if (employeeFullName.toUpperCase().includes(employeeSearch.value.toUpperCase())) {
                     memberContainer.style = 'display: ""';
                 }
                 else {
