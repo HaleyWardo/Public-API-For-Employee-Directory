@@ -41,6 +41,12 @@ header input {
     cursor: pointer;
 }
 
+.grid__item:hover {
+    border: 1px solid rgba(57, 215, 243, 0.25);
+    transition: .7s;
+    box-shadow: 10px 10px 20px rgba(57, 215, 243, 0.25), 0 10px 10px rgba(57, 215, 243, 0.22);
+}
+
 .grid__item img {
     border-radius: 50%;
 }
