@@ -108,20 +108,7 @@ modalOverlay.addEventListener('click', (e) => {
 fetch('https://randomuser.me/api/?results=12&nat=us&inc=name,picture,email,location,cell,dob')
     .then(response => response.json())
     .then(data => {
-        console.log(data.results);
-    })
-
-
-
-
-/////////////////
-//AJAX REQUEST///
-/////////////////
-$.ajax({
-    url: 'https://randomuser.me/api/?results=12&nat=us&inc=name,picture,email,location,cell,dob',
-    dataType: 'json',
-    success: function(response) {
-        employees = response.results;
+        employees = data.results;
 
         //MAIN EMPLOYEE DIRECTORY
         for (let i = 0; i < employees.length; i++) {
@@ -157,5 +144,4 @@ $.ajax({
                 }
             });
         }
-    }
-});
+    });
