@@ -101,6 +101,19 @@ modalOverlay.addEventListener('click', (e) => {
     }
 });
 
+
+/////////////////
+//Fetch REQUEST///
+/////////////////
+fetch('https://randomuser.me/api/?results=12&nat=us&inc=name,picture,email,location,cell,dob')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.results);
+    })
+
+
+
+
 /////////////////
 //AJAX REQUEST///
 /////////////////
